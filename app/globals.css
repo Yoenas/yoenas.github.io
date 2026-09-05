@@ -1,0 +1,288 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-sans-custom);
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+}
+
+:root {
+  color-scheme: dark;
+  --background: #0b0f17;
+  --foreground: #edf3f8;
+  --card: #111824;
+  --card-foreground: #edf3f8;
+  --muted: #172131;
+  --muted-foreground: #8e9bad;
+  --border: rgba(255, 255, 255, .10);
+  --primary: #38bdf8;
+  --primary-foreground: #07131e;
+  --ring: #38bdf8;
+  --font-sans-custom: 'Geist', 'Inter', sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background: var(--background);
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    min-width: 320px;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  .page-shell {
+    @apply mx-auto w-full max-w-6xl px-5 md:px-8;
+  }
+
+  .hero-shell {
+    @apply min-h-screen pt-30 pb-4 md:pt-32;
+    background-image: linear-gradient(rgba(255, 255, 255, .035) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px);
+    background-size: 48px 48px;
+    background-position: center top;
+  }
+
+  .section-pad {
+    @apply py-20 md:py-24;
+  }
+
+  .eyebrow {
+    @apply text-[11px] font-medium uppercase tracking-[.22em] text-muted-foreground;
+  }
+
+  .tag {
+    @apply inline-flex rounded-full border border-white/10 bg-white/4 px-2.5 py-1.5 text-[11px] text-muted-foreground;
+  }
+
+  .status-pill {
+    @apply inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/[.07] px-3 py-1.5 text-xs text-emerald-200;
+  }
+
+  .status-dot {
+    @apply size-1.5 rounded-full bg-emerald-300 shadow-sm shadow-emerald-300/30;
+    animation: pulse 2s infinite;
+  }
+
+  .stat-value {
+    @apply text-2xl font-medium tracking-[-.04em] text-foreground;
+  }
+
+  .stat-label {
+    @apply mt-1 text-xs text-muted-foreground;
+  }
+
+  .project-card,
+  .bento-card,
+  .footer-card {
+    @apply overflow-hidden rounded-3xl border border-white/10 bg-white/2.5;
+  }
+
+  .project-card {
+    @apply transition duration-500 hover:-translate-y-1 hover:border-white/20 hover:bg-white/4;
+  }
+
+  .project-visual {
+    @apply relative min-h-72 overflow-hidden border-b border-white/10 md:min-h-96 md:border-b-0 md:border-r;
+  }
+
+  .bento-card {
+    @apply flex min-h-64 flex-col justify-between p-6 transition hover:border-white/20 md:p-8;
+  }
+
+  .timeline-row {
+    @apply grid gap-4 border-b border-white/10 py-8 md:grid-cols-[180px_1fr] md:gap-12;
+  }
+
+  .footer-card {
+    @apply px-6 py-12 md:px-12 md:py-20;
+    background: radial-gradient(circle at 85% 20%, rgb(56 189 248 / .12), transparent 32%), rgb(255 255 255 / .025);
+  }
+
+  .button-primary {
+    @apply inline-flex items-center gap-2 rounded-xl bg-foreground px-4 py-3 text-sm font-medium text-background transition hover:bg-sky-200;
+  }
+
+  .button-quiet {
+    @apply items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-xs text-foreground transition hover:border-white/20 hover:bg-white/5;
+  }
+
+  .icon-button {
+    @apply grid size-9 place-items-center rounded-lg bg-white/10 backdrop-blur-md border border-white/10 text-muted-foreground transition hover:bg-white/10 hover:text-foreground;
+  }
+
+  .text-button,
+  .social-link {
+    @apply inline-flex items-center gap-1 text-xs text-foreground transition hover:text-sky-200;
+  }
+
+  .social-link {
+    @apply gap-2 text-muted-foreground;
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: .45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+@layer components {
+  .proof-status {
+    @apply inline-flex items-center rounded-full border px-2 py-1 text-[10px] font-medium uppercase tracking-[.16em];
+  }
+
+  .proof-status-live {
+    @apply border-emerald-300/20 bg-emerald-300/10 text-emerald-200;
+  }
+
+  .proof-status-pre {
+    @apply border-amber-300/20 bg-amber-300/10 text-amber-200;
+  }
+
+  .proof-drawer {
+    animation: proof-in .35s cubic-bezier(.22, 1, .36, 1);
+  }
+
+  .proof-metric {
+    @apply rounded-2xl border border-sky-300/15 bg-sky-300/6 p-5;
+  }
+
+  .artifact-tabs {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .artifact-tab {
+    @apply inline-flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-xs text-muted-foreground transition hover:border-white/20 hover:bg-white/5 hover:text-foreground;
+  }
+
+  .artifact-tab-active {
+    @apply border-sky-300/30 bg-sky-300/10 text-sky-200;
+  }
+
+  .evidence-frame,
+  .evidence-focus {
+    @apply overflow-hidden rounded-2xl border border-emerald-300/15 bg-[#07110f] shadow-2xl;
+  }
+
+  .evidence-frame pre,
+  .evidence-focus pre {
+    font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+}
+
+@keyframes proof-in {
+  from {
+    opacity: 0;
+    transform: translateX(2rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .proof-drawer {
+    padding-bottom: 2rem;
+  }
+
+  .evidence-focus pre {
+    max-height: 70vh;
+  }
+}
+
+@layer components {
+
+  /* ── Language toggle ────────────────────────────────── */
+  .lang-toggle {
+    @apply inline-flex items-center rounded-lg border border-white/10 bg-white/4 p-0.5;
+  }
+
+  .lang-toggle-segment {
+    @apply relative cursor-pointer rounded-md px-2.5 py-1.5 text-[11px] font-medium tracking-wider text-muted-foreground transition-colors;
+  }
+
+  .lang-toggle-segment:hover {
+    @apply text-foreground;
+  }
+
+  .lang-toggle-active {
+    @apply text-foreground;
+  }
+
+  .lang-toggle-pill {
+    @apply absolute inset-0 rounded-md bg-white/10;
+  }
+
+  /* ── Action buttons ─────────────────────────────────── */
+  .case-study-button {
+    @apply inline-flex items-center gap-2 rounded-xl bg-foreground px-4 py-2.5 text-xs font-semibold text-background cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:bg-sky-200 hover:shadow-lg hover:shadow-sky-400/25 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400;
+  }
+
+  .verification-button {
+    @apply inline-flex items-center gap-2 rounded-xl border border-sky-400/40 bg-sky-400/15 px-4 py-2.5 text-xs font-semibold text-sky-100 cursor-pointer shadow-md shadow-sky-400/10 transition-all duration-200 hover:scale-[1.02] hover:border-sky-300/80 hover:bg-sky-400/25 hover:text-white hover:shadow-lg hover:shadow-sky-400/30 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400;
+  }
+
+  .store-button {
+    @apply inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/4 px-3.5 py-2.5 text-xs font-medium text-foreground transition-all duration-200 hover:scale-[1.02] hover:border-white/20 hover:bg-white/8 hover:text-white active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40;
+  }
+
+  .store-button-secondary {
+    @apply border-white/8 text-muted-foreground;
+  }
+
+  .store-button-secondary:hover {
+    @apply border-white/15 text-foreground;
+  }
+
+  /* ── Status indicator dot (for Release-Ready badge) ─── */
+  .status-indicator-dot {
+    @apply mr-1.5 inline-block size-1.5 rounded-full shadow-sm shadow-sky-300/30;
+    background: linear-gradient(135deg, #7dd3fc, #fbbf24);
+  }
+}
