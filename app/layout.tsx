@@ -1,19 +1,10 @@
 import { Analytics } from '@vercel/analytics/next'
-import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
-import { LanguageProvider } from '@/lib/i18n'
-
-const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-})
 
 export const metadata: Metadata = {
-  title: 'Yusril Nurhadi AS — Multiplatform Software Engineer',
-  description:
-    'Multiplatform Software Engineer building polished KMP & Flutter apps. Featured work, skills, experience, and contact.',
+  title: 'Yusril Nurhadi — Multiplatform Software Engineer',
+  description: 'Portfolio of Yusril Nurhadi, a multiplatform software engineer building polished mobile and desktop products.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -34,20 +25,11 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
-  return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} bg-background`}
-    >
-      <body className="font-sans antialiased">
-        <LanguageProvider>{children}</LanguageProvider>
-        {process.env.NODE_ENV === 'production' && <Analytics />}
-      </body>
-    </html>
-  )
+export const viewport: Viewport = {
+  colorScheme: 'dark',
+  themeColor: '#0b0f17',
+}
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return <html lang="en" className="bg-background"><body className="antialiased">{children}{process.env.NODE_ENV === 'production' && <Analytics />}</body></html>
 }
