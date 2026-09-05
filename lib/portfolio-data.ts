@@ -32,6 +32,10 @@ export interface Project {
   playStoreUrl?: string
   appStoreUrl?: string
   githubUrl?: string
+  /** Paths relative to /public – used in the Zone B hero visual */
+  mockupImages?: string[]
+  /** App icon / logo path relative to /public */
+  logoImage: string
 }
 
 /* ── Experience ────────────────────────────────────────────── */
@@ -120,7 +124,15 @@ export const projects: Project[] = [
     },
     platforms: ['Android', 'iOS'],
     accent: 'sky',
-    techStack: ['Flutter', 'Dart', 'GetX', 'Sentry', 'Dartz', 'Google Maps'],
+    techStack: ['Flutter', 'Dart', 'GetX', 'Google & Apple OAuth 2.0', 'Sentry', 'Dartz', 'Google Maps'],
+    mockupImages: [
+      '/apps/rb/1.png',
+      '/apps/rb/2.png',
+      '/apps/rb/3.png',
+      '/apps/rb/5.png',
+      '/apps/rb/4.png',
+    ],
+    logoImage: '/apps/rb/logo_rumahberkat.png',
     playStoreUrl: 'https://play.google.com/store/apps/details?id=com.rumahberkat&pcampaignid=web_share',
     appStoreUrl: 'https://apps.apple.com/us/app/rumah-berkat-donasi-daring/id1580891686',
     detail: {
@@ -186,8 +198,8 @@ export const projects: Project[] = [
   {
     title: 'Auxonode Desktop',
     eyebrow: {
-      en: 'Networking · Desktop client',
-      id: 'Jaringan · Klien desktop',
+      en: 'VPN - Private Networking · Desktop client',
+      id: 'VPN - Jaringan Pribadi · Desktop client',
     },
     thesis: {
       en: 'Private networking controls that feel native everywhere.',
@@ -200,6 +212,7 @@ export const projects: Project[] = [
     platforms: ['macOS', 'Windows'],
     accent: 'violet',
     techStack: ['Kotlin', 'Compose Multiplatform', 'Ktor', 'kotlinx.serialization', 'DataStore', 'Coil3', 'Coroutines & Flow'],
+    logoImage: '/apps/rb/logo_rumahberkat.png',
     detail: {
       challenge: {
         en: 'Make complex WireGuard and OpenVPN workflows approachable without hiding the useful controls.',
@@ -276,6 +289,14 @@ export const projects: Project[] = [
     platforms: ['Android', 'iOS'],
     accent: 'amber',
     techStack: ['Flutter', 'Riverpod', 'Firebase Auth', 'Cloud Firestore', 'SQFlite', 'TMDB API', 'Freezed'],
+    mockupImages: [
+      '/apps/mv/2.png',
+      '/apps/mv/3.png',
+      '/apps/mv/1.png',
+      '/apps/mv/4.png',
+      '/apps/mv/5.png',
+    ],
+    logoImage: '/apps/mv/logo_movievault.svg',
     playStoreUrl: 'https://play.google.com/store/apps/details?id=com.cielsoftwaresolutions.movie_vault&pcampaignid=web_share',
     githubUrl: 'https://github.com/Yoenas/MovieVault',
     detail: {
@@ -337,8 +358,8 @@ export const projects: Project[] = [
   {
     title: 'Auxonode Android',
     eyebrow: {
-      en: 'Networking · Android client',
-      id: 'Networking · Klien android',
+      en: 'VPN - Private Networking · Android client',
+      id: 'VPN - Jaringan Pribadi · Klien Android',
     },
     thesis: {
       en: 'A secure tunnel, reduced to the essentials.',
@@ -351,6 +372,7 @@ export const projects: Project[] = [
     platforms: ['Android'],
     accent: 'emerald',
     techStack: ['Kotlin', 'Jetpack Compose', 'Android SDK', 'WireGuard', 'OpenVPN', 'Gradle (AGP 8.8+)'],
+    logoImage: '/apps/rb/logo_rumahberkat.png',
     detail: {
       challenge: {
         en: 'Bring desktop-grade networking primitives to a focused Android experience.',

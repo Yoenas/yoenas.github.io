@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import { ArrowUpRight, Check, ChevronRight, Copy, ExternalLink, Eye, FileText, Layers3, Menu, Terminal, X, ZoomIn } from 'lucide-react'
 import { motion, type Variants } from 'framer-motion'
 import {
@@ -106,41 +107,127 @@ function SectionHeading({ eyebrow, title, detail }: { eyebrow: string; title: st
 /* ── Project Visual (Zone B: Hero Visual) ──────────────────── */
 
 function ProjectVisual({ project }: { project: Project }) {
+  const images = project.mockupImages ?? []
+  const hasImages = images.length > 0
+  const [active, setActive] = useState(0)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // Auto-advance carousel
+  useEffect(() => {
+    if (!hasImages || images.length < 2) return
+    timerRef.current = setInterval(() => {
+      setActive((prev) => (prev + 1) % images.length)
+    }, 3500)
+    return () => { if (timerRef.current) clearInterval(timerRef.current) }
+  }, [hasImages, images.length])
+
+  const goTo = (index: number) => {
+    if (timerRef.current) clearInterval(timerRef.current)
+    setActive(index)
+    // restart auto-advance after manual interaction
+    timerRef.current = setInterval(() => {
+      setActive((prev) => (prev + 1) % images.length)
+    }, 3500)
+  }
+
   return (
     <div className={`project-visual bg-linear-to-br ${accents[project.accent]}`}>
-      {/* Device mockup / screenshot container overflowing seamlessly at bottom */}
-      <div className="absolute inset-x-6 top-6 -bottom-10 rounded-t-2xl sm:rounded-t-3xl border border-white/15 bg-background/85 p-4 shadow-2xl backdrop-blur-xl transition-all duration-500 group-hover:-translate-y-2 group-hover:border-white/25 sm:inset-x-8 sm:top-7">
-        {/* Frame Window Bar */}
-        <div className="flex items-center justify-between border-b border-white/10 pb-3">
-          <div className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-current opacity-80" />
-            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">
-              {project.platforms.join(' · ')}
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="size-1.5 rounded-full bg-white/20" />
-            <span className="size-1.5 rounded-full bg-white/20" />
-            <span className="size-1.5 rounded-full bg-white/20" />
-          </div>
-        </div>
+      <div className="absolute inset-x-6 top-2 bottom-2 rounded-t-2xl sm:rounded-t-3xl
+       shadow-2xl backdrop-blur-xl transition-all duration-500 group-hover:-translate-y-2
+       group-hover:border-white/25 sm:inset-x-8 sm:top-2">
+        {hasImages ? (
+          /* ── Real mockup showcase ────────────────────────────── */
+          <div className="flex h-full flex-col gap-3 pt-2">
+            {/* Dot indicators */}
+            <div className="flex items-center gap-1 shrink-0 self-end">
+              {images.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => goTo(idx)}
+                  aria-label={`Go to screenshot ${idx + 1}`}
+                  style={{ transition: 'all 0.3s ease' }}
+                  className={`rounded-full bg-current ${idx === active
+                    ? 'w-4 h-1.5 opacity-80'
+                    : 'size-1.5 opacity-25'
+                    }`}
+                />
+              ))}
+            </div>
 
-        {/* Mock Interface Content */}
-        <div className="flex h-full flex-col justify-end gap-3 pb-8">
-          <div className="flex items-center gap-3.5">
-            <div className="size-12 sm:size-14 rounded-2xl border border-white/10 bg-white/5 p-2.5 shrink-0 flex items-center justify-center">
-              <div className="h-full w-full rounded-xl bg-current opacity-60" />
-            </div>
-            <div className="flex-1 min-w-0 flex flex-col gap-2">
-              <div className="h-2.5 w-3/4 rounded-full bg-white/20" />
-              <div className="h-2 w-1/2 rounded-full bg-white/10" />
+            {/* Screenshot fan — fills all remaining space, only 3 phones shown */}
+            <div className="relative flex flex-1 items-center justify-center overflow-hidden">
+              {images.map((src, idx) => {
+                const offset = idx - active
+                const isActive = offset === 0
+                const isAdjacent = Math.abs(offset) === 1
+                // Only render the front 3 (active + 2 adjacent) — others are invisible
+                const isVisible = Math.abs(offset) <= 1
+                return (
+                  <button
+                    key={src}
+                    type="button"
+                    aria-label={`View screenshot ${idx + 1}`}
+                    onClick={() => goTo(idx)}
+                    style={{
+                      position: 'absolute',
+                      left: '50%',
+                      // active: centred; adjacent ones slide ±52% of container width
+                      transform: isActive
+                        ? 'translateX(-50%) translateY(0) scale(1)'
+                        : offset === -1
+                          ? 'translateX(calc(-50% - 52%)) translateY(8%) scale(0.8)'
+                          : offset === 1
+                            ? 'translateX(calc(-50% + 52%)) translateY(8%) scale(0.8)'
+                            : offset < -1
+                              ? 'translateX(calc(-50% - 100%)) translateY(15%) scale(0.65)'
+                              : 'translateX(calc(-50% + 100%)) translateY(15%) scale(0.65)',
+                      opacity: isActive ? 1 : isAdjacent ? 0.5 : 0,
+                      zIndex: isActive ? 10 : isAdjacent ? 5 : 0,
+                      pointerEvents: isVisible ? 'auto' : 'none',
+                      transition: 'transform 0.45s cubic-bezier(0.22,1,0.36,1), opacity 0.4s ease',
+                      width: '35%',
+                    }}
+                    className="relative cursor-pointer select-none"
+                  // height is controlled by aspect-ratio on the inner div
+                  >
+                    <div
+                      className="w-full rounded-[12px] border-2 border-white/15 bg-background/60 shadow-2xl overflow-hidden"
+                      style={{ aspectRatio: '9/18' }}
+                    >
+                      <Image
+                        src={src}
+                        alt={`${project.title} screenshot ${idx + 1}`}
+                        fill
+                        sizes="(max-width: 640px) 120px, 150px"
+                        className="object-contain object-top"
+                        draggable={false}
+                      />
+                    </div>
+                  </button>
+                )
+              })}
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="h-1.5 w-1/3 rounded-full bg-current opacity-40" />
-            <div className="h-1.5 w-2/3 rounded-full bg-white/10" />
+        ) : (
+          /* ── Abstract skeleton fallback ──────────────────────── */
+          <div className="flex h-full flex-col justify-end gap-3 pb-8">
+            <div className="flex items-center gap-3.5">
+              <div className="size-12 sm:size-14 rounded-2xl border border-white/10 bg-white/5 
+              p-2.5 shrink-0 flex items-center justify-center">
+                <div className="h-full w-full rounded-xl bg-current opacity-60" />
+              </div>
+              <div className="flex-1 min-w-0 flex flex-col gap-2">
+                <div className="h-2.5 w-3/4 rounded-full bg-white/20" />
+                <div className="h-2 w-1/2 rounded-full bg-white/10" />
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-1.5 w-1/3 rounded-full bg-current opacity-40" />
+              <div className="h-1.5 w-2/3 rounded-full bg-white/10" />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )
@@ -229,11 +316,27 @@ function ProjectCard({
   return (
     <article className="group project-card flex flex-col justify-between">
       {/* ── Zone A: Header (Identity & Platforms) ── */}
-      <div className="flex items-start justify-between gap-4 p-6 pb-4">
+      <div className="flex items-start justify-between gap-4 p-6 pb-4 flex-col md:flex-row">
         <div className="flex flex-col gap-2 min-w-0">
-          <h3 className="text-xl font-semibold tracking-tight text-foreground">{project.title}</h3>
+          {/* taro di sini */}
+          <div className='flex gap-3'>
+            <div className="relative size-12 shrink-0 overflow-hidden rounded-lg border border-white/10 shadow-md">
+              <Image
+                src={project.logoImage}
+                alt={`${project.title} logo`}
+                fill
+                sizes="32px"
+                className="object-cover"
+              />
+            </div>
+            <div className='flex flex-col'>
+              <h3 className="text-xl font-semibold tracking-tight text-foreground">{project.title}</h3>
+              <p className="text-[15px] text-muted-foreground mt-0.5">{project.eyebrow.en}</p>
+            </div>
+          </div>
           <div>
-            <span className="inline-flex items-center rounded-md border border-sky-400/20 bg-sky-400/10 px-2.5 py-0.5 text-xs font-medium text-sky-300">
+            <span className="inline-flex items-center rounded-md border border-sky-400/20 bg-sky-400/10
+             px-2.5 py-0.5 text-xs font-medium text-sky-300">
               {lp.metric}
             </span>
           </div>
@@ -311,7 +414,8 @@ function ProjectCard({
                 </a>
               )}
               {!isPublished && (
-                <div className="inline-flex h-10 items-center gap-2 rounded-xl border border-emerald-400/20 bg-emerald-400/5 px-3 text-xs font-medium text-emerald-300/90">
+                <div className="inline-flex h-10 items-center gap-2 rounded-xl border border-emerald-400/20
+                 bg-emerald-400/5 px-3 text-xs font-medium text-emerald-300/90">
                   <span className="size-1.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/50" />
                   <span>{t(ui.qaPassedLockup, lang)}</span>
                 </div>
@@ -368,7 +472,8 @@ function ProofDrawer({ project, onClose }: { project: Project; onClose: () => vo
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end" role="dialog" aria-modal="true" aria-label={`${project.title} engineering proof`}>
-      <button className="absolute inset-0 cursor-default bg-background/80 backdrop-blur-sm" aria-label={t(ui.proofClose, lang)} onClick={onClose} />
+      <button className="absolute inset-0 cursor-default bg-background/80 backdrop-blur-sm"
+        aria-label={t(ui.proofClose, lang)} onClick={onClose} />
       <aside className="proof-drawer relative h-full w-full max-w-2xl overflow-y-auto border-l border-white/10 bg-card p-6 shadow-2xl md:p-10">
         <button className="icon-button fixed right-5 top-5" onClick={onClose} aria-label={t(ui.proofClose, lang)}><X size={18} /></button>
 
@@ -403,7 +508,9 @@ function ProofDrawer({ project, onClose }: { project: Project; onClose: () => vo
             </div>
             <div className="artifact-tabs mt-4" role="tablist">
               {artifacts.map((item, index) => (
-                <button key={item.label} role="tab" aria-selected={active === index} className={`artifact-tab ${active === index ? 'artifact-tab-active' : ''}`} onClick={() => setActive(index)}>
+                <button key={item.label} role="tab" aria-selected={active === index}
+                  className={`artifact-tab ${active === index ? 'artifact-tab-active' : ''}`}
+                  onClick={() => setActive(index)}>
                   <ArtifactIcon kind={item.kind} />{item.label}
                 </button>
               ))}
@@ -445,7 +552,9 @@ function ProofDrawer({ project, onClose }: { project: Project; onClose: () => vo
       </aside>
 
       {zoomed && artifact && (
-        <div className="fixed inset-0 z-60 grid place-items-center bg-background/90 p-5 backdrop-blur-md" role="dialog" aria-label={t(ui.proofCloseFocus, lang)} onClick={() => setZoomed(false)}>
+        <div className="fixed inset-0 z-60 grid place-items-center bg-background/90 
+        p-5 backdrop-blur-md" role="dialog" aria-label={t(ui.proofCloseFocus, lang)}
+          onClick={() => setZoomed(false)}>
           <div className="evidence-focus w-full max-w-3xl" onClick={(event) => event.stopPropagation()}>
             <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
               <span className="text-sm text-muted-foreground">{project.title} / {artifact.label}</span>
@@ -504,36 +613,29 @@ function AboutSection() {
   }
 
   return (
-    <motion.section
-      id="about"
-      className="page-shell section-pad relative border-t border-white/10"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-80px' }}
-      variants={containerVariants}
-    >
+    <div id="about" className="page-shell section-pad relative border-t border-white/10">
       {/* Ambient background glow */}
       <div className="pointer-events-none absolute -top-16 right-1/4 -z-10 h-80 w-80 rounded-full bg-sky-500/4 blur-3xl" />
 
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-14 items-start">
         {/* Column 1: Narrative */}
         <div className="lg:col-span-7 flex flex-col">
-          <motion.div variants={itemVariants} className="flex items-center gap-2">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/3 px-3.5 py-1.5 text-xs backdrop-blur-sm">
+          <div className="flex items-center gap-2">
+            <div className="inline-flex items-center gap-2 rounded-full border
+             border-white/10 bg-white/3 px-3.5 py-1.5 text-xs backdrop-blur-sm">
               <span className="font-mono text-[10px] uppercase tracking-wider text-sky-300">{t(ui.aboutTag, lang)}</span>
               <span className="h-3 w-px bg-white/15" />
               <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-neutral-400">{t(ui.aboutEyebrow, lang)}</span>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.h2
-            variants={itemVariants}
+          <h2
             className="mt-6 text-2xl sm:text-3xl font-semibold tracking-tight text-neutral-100 leading-snug"
           >
             {t(ui.aboutHeadline, lang)}
-          </motion.h2>
+          </h2>
 
-          <motion.div variants={itemVariants} className="mt-6 flex flex-col gap-5 text-neutral-400 leading-relaxed text-base sm:text-lg">
+          <div className="mt-6 flex flex-col gap-5 text-neutral-400 leading-relaxed text-base sm:text-lg">
             <p>
               {lang === 'id' ? (
                 <>
@@ -556,16 +658,16 @@ function AboutSection() {
                 </>
               )}
             </p>
-          </motion.div>
+          </div>
         </div>
 
         {/* Column 2: Proof Points / Metric Cards */}
         <div className="lg:col-span-5 flex flex-col gap-4">
           {stats.map((stat, idx) => (
-            <motion.div
+            <div
               key={idx}
-              variants={itemVariants}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/3 p-6 backdrop-blur-md transition-all duration-300 hover:border-white/20 hover:bg-white/5"
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/3 
+              p-6 backdrop-blur-md transition-all duration-300 hover:border-white/20 hover:bg-white/5"
             >
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[10px] uppercase tracking-widest text-sky-400/80">
@@ -581,11 +683,11 @@ function AboutSection() {
               <p className="mt-2 text-sm sm:text-base text-neutral-400 leading-snug font-normal">
                 {stat.label}
               </p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
-    </motion.section>
+    </div>
   )
 }
 
@@ -614,7 +716,8 @@ export function PortfolioSite() {
   return (
     <main>
       {/* ── Navbar ──────────────────────────────────────────── */}
-      <nav className="fixed inset-x-4 top-4 z-40 mx-auto flex max-w-6xl items-center justify-between rounded-2xl border border-white/10 bg-background/80 px-4 py-3 shadow-lg backdrop-blur-xl md:inset-x-6 md:px-5">
+      <nav className="fixed inset-x-4 top-4 z-40 mx-auto flex max-w-6xl items-center justify-between 
+      rounded-2xl border border-white/10 bg-background/80 px-4 py-3 shadow-lg backdrop-blur-xl md:inset-x-6 md:px-5">
         <a href="#top" className="flex items-center gap-3" aria-label="Yusril home">
           <span className="grid size-8 place-items-center rounded-lg bg-foreground text-xs font-bold text-background">YN</span>
           <span className="hidden text-sm font-medium sm:inline">{profile.handle}</span>
@@ -730,7 +833,8 @@ export function PortfolioSite() {
             {copied ? t(ui.contactCopied, lang) : t(ui.contactButton, lang)} <ArrowUpRight size={17} />
           </button>
         </div>
-        <div className="flex flex-col gap-5 border-t border-white/10 pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-5 border-t border-white/10 pt-6 text-sm 
+        text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <span>© 2026 {profile.name}</span>
           <div className="flex gap-4">
             <a className="social-link" href={profile.github} target="_blank" rel="noreferrer"><ExternalLink size={16} />GitHub</a>

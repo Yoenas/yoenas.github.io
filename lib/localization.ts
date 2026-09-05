@@ -92,7 +92,7 @@ export const ui: Record<string, LocalizedText> = {
   appStoreLabel:       { en: 'App Store', id: 'App Store' },
   playStoreLabel:      { en: 'Play Store', id: 'Play Store' },
   sourceLabel:         { en: 'Source', id: 'Source' },
-  qaPassedLockup:      { en: 'QA Passed · Ready', id: 'Lolos QA · Siap Rilis' },
+  qaPassedLockup:      { en: 'QA Passed · Ready to Publish', id: 'Lolos QA · Siap Rilis' },
 
   /* ── language toggle ──────────────────────────── */
   selectLanguage:   { en: 'Select language', id: 'Pilih bahasa' },
