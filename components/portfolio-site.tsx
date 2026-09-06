@@ -111,11 +111,13 @@ function MediaLightbox({
   items,
   startIndex,
   projectTitle,
+  accent,
   onClose,
 }: {
   items: MediaItem[]
   startIndex: number
   projectTitle: string
+  accent: Project['accent']
   onClose: () => void
 }) {
   const [idx, setIdx] = useState(startIndex)
@@ -150,8 +152,7 @@ function MediaLightbox({
 
   return (
     <div
-      // className={`fixed inset-0 z-70 flex items-center justify-center bg-linear-to-br backdrop-blur-md pointer-events-auto`}
-      className="fixed inset-0 z-70 flex items-center justify-center bg-black/90 backdrop-blur-md pointer-events-auto"
+      className={`fixed inset-0 z-70 flex items-center justify-center bg-linear-to-br ${accents[accent]} backdrop-blur-md pointer-events-auto`}
       role="dialog"
       aria-modal="true"
       aria-label={`${projectTitle} media viewer`}
@@ -895,6 +896,7 @@ export function PortfolioSite() {
     items: import('@/lib/portfolio-data').MediaItem[]
     startIndex: number
     title: string
+    accent: Project['accent']
   } | null>(null)
 
   const copyEmail = async () => {
@@ -976,7 +978,7 @@ export function PortfolioSite() {
               project={project}
               onSelect={setSelected}
               isAnyLightboxOpen={lightbox !== null}
-              onOpenLightbox={(items, startIndex) => setLightbox({ items, startIndex, title: project.title })}
+              onOpenLightbox={(items, startIndex) => setLightbox({ items, startIndex, title: project.title, accent: project.accent })}
             />
           ))}
         </div>
@@ -1051,6 +1053,7 @@ export function PortfolioSite() {
           items={lightbox.items}
           startIndex={lightbox.startIndex}
           projectTitle={lightbox.title}
+          accent={lightbox.accent}
           onClose={() => setLightbox(null)}
         />
       )}
