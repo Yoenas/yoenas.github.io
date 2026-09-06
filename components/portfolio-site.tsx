@@ -197,7 +197,7 @@ function MediaLightbox({
 
         {/* Close */}
         <button
-          className="icon-button-mediabox absolute -top-8 right-0 sm:right-0"
+          className="icon-button-mediabox absolute -top-10 right-0 sm:right-0"
           onClick={onClose}
           aria-label="Close media viewer"
         >
@@ -230,7 +230,7 @@ function MediaLightbox({
 
         {/* Mobile swipe row — bottom bar */}
         {total > 1 && (
-          <div className="absolute -bottom-8 left-0 right-0 flex items-center justify-center gap-4">
+          <div className="absolute -bottom-10 left-0 right-0 flex items-center justify-center gap-4">
             <button className="icon-button-mediabox sm:hidden" onClick={prev} aria-label="Previous">
               <ChevronRight size={18} className="rotate-180" />
             </button>
@@ -255,7 +255,7 @@ function MediaLightbox({
 
         {/* Counter */}
         {total > 1 && (
-          <span className="absolute -top-6 left-0 text-xs text-white/50 font-mono">
+          <span className="absolute -top-8 left-0 text-xs text-white/50 font-mono">
             {idx + 1} / {total}
           </span>
         )}
