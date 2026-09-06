@@ -161,13 +161,13 @@ function MediaLightbox({
       {/* Media container — stops click from closing */}
       <div
         className="relative flex items-center justify-center"
-        style={{ maxWidth: '90vw', maxHeight: '90vh', width: '100%', height: '100%' }}
+        style={{ maxWidth: '90vw', maxHeight: 'calc(100dvh - 140px)', width: '100%', height: '100%' }}
         onClick={(e) => e.stopPropagation()}
       >
         {item.kind === 'image' ? (
           <div
             className="relative"
-            style={{ maxWidth: '90vw', maxHeight: '90vh', width: '100%', height: '100%' }}
+            style={{ maxWidth: '90vw', maxHeight: 'calc(100dvh - 140px)', width: '100%', height: '100%' }}
           >
             <Image
               src={item.src}
@@ -188,7 +188,7 @@ function MediaLightbox({
             className="rounded-xl shadow-2xl"
             style={{
               maxWidth: '90vw',
-              maxHeight: '90vh',
+              maxHeight: 'calc(100dvh - 140px)',
               objectFit: 'contain',
               display: 'block',
             }}
@@ -197,7 +197,7 @@ function MediaLightbox({
 
         {/* Close */}
         <button
-          className="icon-button absolute -top-8 right-0 sm:right-0"
+          className="icon-button-mediabox absolute -top-8 right-0 sm:right-0"
           onClick={onClose}
           aria-label="Close media viewer"
         >
@@ -208,7 +208,7 @@ function MediaLightbox({
         {total > 1 && (
           <button
             className='absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12
-             icon-button hidden sm:flex items-center justify-center'
+             icon-button-mediabox hidden sm:flex items-center justify-center'
             onClick={prev}
             aria-label="Previous"
           >
@@ -220,7 +220,7 @@ function MediaLightbox({
         {total > 1 && (
           <button
             className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12
-            icon-button hidden sm:flex items-center justify-center"
+            icon-button-mediabox hidden sm:flex items-center justify-center"
             onClick={next}
             aria-label="Next"
           >
@@ -231,7 +231,7 @@ function MediaLightbox({
         {/* Mobile swipe row — bottom bar */}
         {total > 1 && (
           <div className="absolute -bottom-8 left-0 right-0 flex items-center justify-center gap-4">
-            <button className="icon-button sm:hidden" onClick={prev} aria-label="Previous">
+            <button className="icon-button-mediabox sm:hidden" onClick={prev} aria-label="Previous">
               <ChevronRight size={18} className="rotate-180" />
             </button>
             {/* Dot strip */}
@@ -247,7 +247,7 @@ function MediaLightbox({
                 />
               ))}
             </div>
-            <button className="icon-button sm:hidden" onClick={next} aria-label="Next">
+            <button className="icon-button-mediabox sm:hidden" onClick={next} aria-label="Next">
               <ChevronRight size={18} />
             </button>
           </div>
