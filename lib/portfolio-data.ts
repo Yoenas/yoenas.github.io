@@ -103,8 +103,8 @@ export const profile = {
   } satisfies LocalizedText,
   email: 'yusrilnurhadi63@gmail.com',
   tagline: {
-    en: `I don't just write code—I fix broken systems. Delivering scalable, clean, and production-ready apps with CMP and Flutter.`,
-    id: 'Saya tidak sekadar menulis kode—saya memperbaiki sistem yang bermasalah. Menghadirkan aplikasi yang skalabel, bersih, dan siap produksi dengan KMP dan Flutter.',
+    en: `Hi, I'm Yusril, I don't just write code—I fix broken systems. Delivering scalable, clean, and production-ready apps with CMP and Flutter.`,
+    id: 'Hai, saya Yusril, saya tidak sekedar menulis kode—saya memperbaiki sistem yang bermasalah. Menghadirkan aplikasi yang scalable, bersih, dan siap produksi dengan KMP dan Flutter.',
   } satisfies LocalizedText,
   github: 'https://github.com/yoenas',
   linkedin: 'https://linkedin.com/in/yoenas',

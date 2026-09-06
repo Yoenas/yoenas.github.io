@@ -919,6 +919,7 @@ export function PortfolioSite() {
       <nav className="fixed inset-x-4 top-4 z-40 mx-auto flex max-w-6xl items-center justify-between 
       rounded-2xl border border-white/10 bg-background/80 px-4 py-3 shadow-lg backdrop-blur-xl md:inset-x-6 md:px-5">
         <a href="#top" className="flex items-center gap-3" aria-label="Yusril home">
+          
           <span className="grid size-8 place-items-center rounded-lg bg-foreground text-xs font-bold text-background">YN</span>
           <span className="hidden text-sm font-medium sm:inline">{profile.handle}</span>
         </a>
