@@ -14,6 +14,7 @@ import {
   getLocalizedExperience,
   type Project,
   type ProofArtifact,
+  type MediaItem,
 } from '@/lib/portfolio-data'
 import { useLang } from '@/lib/language-context'
 import { t, ui } from '@/lib/localization'
@@ -104,22 +105,190 @@ function SectionHeading({ eyebrow, title, detail }: { eyebrow: string; title: st
   )
 }
 
+/* ── Media Lightbox ─────────────────────────────────── */
+
+function MediaLightbox({
+  items,
+  startIndex,
+  projectTitle,
+  accent,
+  onClose,
+}: {
+  items: MediaItem[]
+  startIndex: number
+  projectTitle: string
+  accent: Project['accent']
+  onClose: () => void
+}) {
+  const [idx, setIdx] = useState(startIndex)
+  const total = items.length
+  const item = items[idx]
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  const prev = () => setIdx((i) => (i - 1 + total) % total)
+  const next = () => setIdx((i) => (i + 1) % total)
+
+  // Pause video when navigating away
+  useEffect(() => {
+    if (item.kind !== 'video') videoRef.current?.pause()
+  }, [idx, item.kind])
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowLeft') prev()
+      if (e.key === 'ArrowRight') next()
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [onClose]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Lock body scroll
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [])
+
+  return (
+    <div
+      className={`fixed inset-0 z-70 flex items-center justify-center bg-linear-to-br ${accents[accent]} backdrop-blur-md pointer-events-auto`}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${projectTitle} media viewer`}
+      onClick={onClose}
+    >
+      {/* Media container — stops click from closing */}
+      <div
+        className="relative flex items-center justify-center"
+        style={{ maxWidth: '90vw', maxHeight: '90vh', width: '100%', height: '100%' }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {item.kind === 'image' ? (
+          <div
+            className="relative"
+            style={{ maxWidth: '90vw', maxHeight: '90vh', width: '100%', height: '100%' }}
+          >
+            <Image
+              src={item.src}
+              alt={`${projectTitle} screenshot ${idx + 1}`}
+              fill
+              sizes="90vw"
+              className="object-contain"
+              priority
+            />
+          </div>
+        ) : (
+          <video
+            ref={videoRef}
+            src={item.src}
+            controls
+            autoPlay
+            playsInline
+            className="rounded-xl shadow-2xl"
+            style={{
+              maxWidth: '90vw',
+              maxHeight: '90vh',
+              objectFit: 'contain',
+              display: 'block',
+            }}
+          />
+        )}
+
+        {/* Close */}
+        <button
+          className="icon-button absolute -top-8 right-0 sm:right-0"
+          onClick={onClose}
+          aria-label="Close media viewer"
+        >
+          <X size={20} />
+        </button>
+
+        {/* Prev */}
+        {total > 1 && (
+          <button
+            className='absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12
+             icon-button hidden sm:flex items-center justify-center'
+            onClick={prev}
+            aria-label="Previous"
+          >
+            <ChevronRight size={20} className="rotate-180" />
+          </button>
+        )}
+
+        {/* Next */}
+        {total > 1 && (
+          <button
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12
+            icon-button hidden sm:flex items-center justify-center"
+            onClick={next}
+            aria-label="Next"
+          >
+            <ChevronRight size={20} />
+          </button>
+        )}
+
+        {/* Mobile swipe row — bottom bar */}
+        {total > 1 && (
+          <div className="absolute -bottom-8 left-0 right-0 flex items-center justify-center gap-4">
+            <button className="icon-button sm:hidden" onClick={prev} aria-label="Previous">
+              <ChevronRight size={18} className="rotate-180" />
+            </button>
+            {/* Dot strip */}
+            <div className="flex items-center gap-1.5">
+              {items.map((it, i) => (
+                <button
+                  key={i}
+                  onClick={() => setIdx(i)}
+                  aria-label={`Go to item ${i + 1}`}
+                  style={{ transition: 'all 0.25s ease' }}
+                  className={`rounded-full bg-current ${i === idx ? 'w-5 h-1.5 opacity-90' : 'size-1.5 opacity-30'
+                    }`}
+                />
+              ))}
+            </div>
+            <button className="icon-button sm:hidden" onClick={next} aria-label="Next">
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        )}
+
+        {/* Counter */}
+        {total > 1 && (
+          <span className="absolute -top-6 left-0 text-xs text-white/50 font-mono">
+            {idx + 1} / {total}
+          </span>
+        )}
+      </div>
+    </div>
+  )
+}
+
 /* ── Project Visual (Zone B: Hero Visual) ──────────────────── */
 
-function ProjectVisual({ project }: { project: Project }) {
+function ProjectVisual({
+  project,
+  isAnyLightboxOpen,
+  onOpenLightbox,
+}: {
+  project: Project
+  isAnyLightboxOpen: boolean
+  onOpenLightbox: (items: import('@/lib/portfolio-data').MediaItem[], startIndex: number) => void
+}) {
   const images = project.mockupImages ?? []
+  const mediaItems = project.media ?? []
   const hasImages = images.length > 0
   const [active, setActive] = useState(0)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   // Auto-advance carousel
   useEffect(() => {
-    if (!hasImages || images.length < 2) return
+    if (!hasImages || images.length < 2 || isAnyLightboxOpen) return
     timerRef.current = setInterval(() => {
       setActive((prev) => (prev + 1) % images.length)
     }, 3500)
     return () => { if (timerRef.current) clearInterval(timerRef.current) }
-  }, [hasImages, images.length])
+  }, [hasImages, images.length, isAnyLightboxOpen])
 
   const goTo = (index: number) => {
     if (timerRef.current) clearInterval(timerRef.current)
@@ -130,8 +299,15 @@ function ProjectVisual({ project }: { project: Project }) {
     }, 3500)
   }
 
+  /** Open lightbox at the media item matching this thumbnail src */
+  const openLightbox = (imageSrc: string) => {
+    if (mediaItems.length === 0) return
+    const mi = mediaItems.findIndex((m) => m.src === imageSrc)
+    onOpenLightbox(mediaItems, mi >= 0 ? mi : 0)
+  }
+
   return (
-    <div className={`project-visual bg-linear-to-br ${accents[project.accent]}`}>
+    <div className={`project-visual bg-linear-to-br ${accents[project.accent]} ${isAnyLightboxOpen ? 'pointer-events-none' : ''}`}>
       <div className="absolute inset-x-6 top-2 bottom-2 rounded-t-2xl sm:rounded-t-3xl
        shadow-2xl backdrop-blur-xl transition-all duration-500 group-hover:-translate-y-2
        group-hover:border-white/25 sm:inset-x-8 sm:top-2">
@@ -161,18 +337,22 @@ function ProjectVisual({ project }: { project: Project }) {
                 const offset = idx - active
                 const isActive = offset === 0
                 const isAdjacent = Math.abs(offset) === 1
-                // Only render the front 3 (active + 2 adjacent) — others are invisible
                 const isVisible = Math.abs(offset) <= 1
                 return (
                   <button
                     key={src}
                     type="button"
-                    aria-label={`View screenshot ${idx + 1}`}
-                    onClick={() => goTo(idx)}
+                    aria-label={isActive && mediaItems.length > 0 ? `Open ${project.title} gallery` : `View screenshot ${idx + 1}`}
+                    onClick={() => {
+                      if (isActive) {
+                        if (mediaItems.length > 0) openLightbox(src)
+                      } else {
+                        goTo(idx)
+                      }
+                    }}
                     style={{
                       position: 'absolute',
                       left: '50%',
-                      // active: centred; adjacent ones slide ±52% of container width
                       transform: isActive
                         ? 'translateX(-50%) translateY(0) scale(1)'
                         : offset === -1
@@ -188,8 +368,7 @@ function ProjectVisual({ project }: { project: Project }) {
                       transition: 'transform 0.45s cubic-bezier(0.22,1,0.36,1), opacity 0.4s ease',
                       width: '35%',
                     }}
-                    className="relative cursor-pointer select-none"
-                  // height is controlled by aspect-ratio on the inner div
+                    className="relative cursor-pointer select-none group/thumb"
                   >
                     <div
                       className="w-full rounded-[12px] border-2 border-white/15 bg-background/60 shadow-2xl overflow-hidden"
@@ -204,6 +383,13 @@ function ProjectVisual({ project }: { project: Project }) {
                         draggable={false}
                       />
                     </div>
+                    {/* Expand hint on the active card */}
+                    {isActive && mediaItems.length > 0 && (
+                      <div className="absolute inset-0 flex items-center justify-center rounded-[12px] 
+                      bg-black/0 opacity-0 transition-all duration-200 group-hover/thumb:bg-black/30 group-hover/thumb:opacity-100">
+                        <ZoomIn size={22} className="text-white drop-shadow-lg" />
+                      </div>
+                    )}
                   </button>
                 )
               })}
@@ -305,16 +491,20 @@ function DrawerActions({ project }: { project: Project }) {
 function ProjectCard({
   project,
   onSelect,
+  isAnyLightboxOpen,
+  onOpenLightbox,
 }: {
   project: Project
   onSelect: (project: Project) => void
+  isAnyLightboxOpen: boolean
+  onOpenLightbox: (items: import('@/lib/portfolio-data').MediaItem[], startIndex: number) => void
 }) {
   const { lang } = useLang()
   const lp = getLocalizedProject(project, lang)
   const isPublished = project.detail.status === 'production'
 
   return (
-    <article className="group project-card flex flex-col justify-between">
+    <article className={`project-card flex flex-col justify-between ${isAnyLightboxOpen ? '' : 'group'}`}>
       {/* ── Zone A: Header (Identity & Platforms) ── */}
       <div className="flex items-start justify-between gap-4 p-6 pb-4 flex-col md:flex-row">
         <div className="flex flex-col gap-2 min-w-0">
@@ -354,7 +544,11 @@ function ProjectCard({
       </div>
 
       {/* ── Zone B: Hero Visual ── */}
-      <ProjectVisual project={project} />
+      <ProjectVisual
+        project={project}
+        isAnyLightboxOpen={isAnyLightboxOpen}
+        onOpenLightbox={onOpenLightbox}
+      />
 
       {/* ── Zone C: Metadata (Description & Stack) ── */}
       <div className="flex flex-1 flex-col justify-between gap-4 p-6 pb-0">
@@ -698,6 +892,12 @@ export function PortfolioSite() {
   const [selected, setSelected] = useState<Project | null>(null)
   const [copied, setCopied] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [lightbox, setLightbox] = useState<{
+    items: import('@/lib/portfolio-data').MediaItem[]
+    startIndex: number
+    title: string
+    accent: Project['accent']
+  } | null>(null)
 
   const copyEmail = async () => {
     await navigator.clipboard?.writeText(profile.email)
@@ -719,6 +919,7 @@ export function PortfolioSite() {
       <nav className="fixed inset-x-4 top-4 z-40 mx-auto flex max-w-6xl items-center justify-between 
       rounded-2xl border border-white/10 bg-background/80 px-4 py-3 shadow-lg backdrop-blur-xl md:inset-x-6 md:px-5">
         <a href="#top" className="flex items-center gap-3" aria-label="Yusril home">
+          
           <span className="grid size-8 place-items-center rounded-lg bg-foreground text-xs font-bold text-background">YN</span>
           <span className="hidden text-sm font-medium sm:inline">{profile.handle}</span>
         </a>
@@ -777,6 +978,8 @@ export function PortfolioSite() {
               key={project.title}
               project={project}
               onSelect={setSelected}
+              isAnyLightboxOpen={lightbox !== null}
+              onOpenLightbox={(items, startIndex) => setLightbox({ items, startIndex, title: project.title, accent: project.accent })}
             />
           ))}
         </div>
@@ -845,6 +1048,16 @@ export function PortfolioSite() {
       </footer>
 
       {selected && <ProofDrawer project={selected} onClose={() => setSelected(null)} />}
+
+      {lightbox !== null && (
+        <MediaLightbox
+          items={lightbox.items}
+          startIndex={lightbox.startIndex}
+          projectTitle={lightbox.title}
+          accent={lightbox.accent}
+          onClose={() => setLightbox(null)}
+        />
+      )}
     </main>
   )
 }

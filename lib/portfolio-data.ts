@@ -20,6 +20,10 @@ export interface ProjectDetail {
   artifacts?: ProofArtifact[]
 }
 
+export type MediaItem =
+  | { kind: 'image'; src: string }
+  | { kind: 'video'; src: string }
+
 export interface Project {
   title: string
   eyebrow: LocalizedText
@@ -32,8 +36,10 @@ export interface Project {
   playStoreUrl?: string
   appStoreUrl?: string
   githubUrl?: string
-  /** Paths relative to /public – used in the Zone B hero visual */
+  /** Thumbnail paths relative to /public – used in the Zone B fan carousel */
   mockupImages?: string[]
+  /** Full ordered media list for the lightbox (images + optional video) */
+  media?: MediaItem[]
   /** App icon / logo path relative to /public */
   logoImage: string
 }
@@ -97,8 +103,8 @@ export const profile = {
   } satisfies LocalizedText,
   email: 'yusrilnurhadi63@gmail.com',
   tagline: {
-    en: `I don't just write code—I fix broken systems. Delivering scalable, clean, and production-ready apps with CMP and Flutter.`,
-    id: 'Saya tidak sekadar menulis kode—saya memperbaiki sistem yang bermasalah. Menghadirkan aplikasi yang skalabel, bersih, dan siap produksi dengan KMP dan Flutter.',
+    en: `Hi, I'm Yusril, I don't just write code—I fix broken systems. Delivering scalable, clean, and production-ready apps with CMP and Flutter.`,
+    id: 'Hai, saya Yusril, saya tidak sekedar menulis kode—saya memperbaiki sistem yang bermasalah. Menghadirkan aplikasi yang scalable, bersih, dan siap produksi dengan KMP dan Flutter.',
   } satisfies LocalizedText,
   github: 'https://github.com/yoenas',
   linkedin: 'https://linkedin.com/in/yoenas',
@@ -131,6 +137,13 @@ export const projects: Project[] = [
       '/apps/rb/3.png',
       '/apps/rb/5.png',
       '/apps/rb/4.png',
+    ],
+    media: [
+      { kind: 'image', src: '/apps/rb/1.png' },
+      { kind: 'image', src: '/apps/rb/2.png' },
+      { kind: 'image', src: '/apps/rb/3.png' },
+      { kind: 'image', src: '/apps/rb/5.png' },
+      { kind: 'image', src: '/apps/rb/4.png' },
     ],
     logoImage: '/apps/rb/logo_rumahberkat.png',
     playStoreUrl: 'https://play.google.com/store/apps/details?id=com.rumahberkat&pcampaignid=web_share',
@@ -212,7 +225,21 @@ export const projects: Project[] = [
     platforms: ['macOS', 'Windows'],
     accent: 'violet',
     techStack: ['Kotlin', 'Compose Multiplatform', 'Ktor', 'kotlinx.serialization', 'DataStore', 'Coil3', 'Coroutines & Flow'],
-    logoImage: '/apps/rb/logo_rumahberkat.png',
+    logoImage: '/apps/ad/logo_auxonode.jpeg',
+    mockupImages: [
+      '/apps/ad/1.png',
+      '/apps/ad/2.png',
+      '/apps/ad/3.png',
+      '/apps/ad/4.png',
+      '/apps/ad/5.png',
+    ],
+    media: [
+      { kind: 'image', src: '/apps/ad/1.png' },
+      { kind: 'image', src: '/apps/ad/2.png' },
+      { kind: 'image', src: '/apps/ad/3.png' },
+      { kind: 'image', src: '/apps/ad/4.png' },
+      { kind: 'image', src: '/apps/ad/5.png' },
+    ],
     detail: {
       challenge: {
         en: 'Make complex WireGuard and OpenVPN workflows approachable without hiding the useful controls.',
@@ -296,6 +323,13 @@ export const projects: Project[] = [
       '/apps/mv/4.png',
       '/apps/mv/5.png',
     ],
+    media: [
+      { kind: 'image', src: '/apps/mv/2.png' },
+      { kind: 'image', src: '/apps/mv/3.png' },
+      { kind: 'image', src: '/apps/mv/1.png' },
+      { kind: 'image', src: '/apps/mv/4.png' },
+      { kind: 'image', src: '/apps/mv/5.png' },
+    ],
     logoImage: '/apps/mv/logo_movievault.svg',
     playStoreUrl: 'https://play.google.com/store/apps/details?id=com.cielsoftwaresolutions.movie_vault&pcampaignid=web_share',
     githubUrl: 'https://github.com/Yoenas/MovieVault',
@@ -372,7 +406,20 @@ export const projects: Project[] = [
     platforms: ['Android'],
     accent: 'emerald',
     techStack: ['Kotlin', 'Jetpack Compose', 'Android SDK', 'WireGuard', 'OpenVPN', 'Gradle (AGP 8.8+)'],
-    logoImage: '/apps/rb/logo_rumahberkat.png',
+    logoImage: '/apps/aa/logo_auxonode.jpeg',
+    mockupImages: [
+      '/apps/aa/1.png',
+      '/apps/aa/2.png',
+      '/apps/aa/3.png',
+      '/apps/aa/4.png',
+    ],
+    media: [
+      { kind: 'image', src: '/apps/aa/1.png' },
+      { kind: 'image', src: '/apps/aa/2.png' },
+      { kind: 'image', src: '/apps/aa/3.png' },
+      { kind: 'image', src: '/apps/aa/4.png' },
+      { kind: 'video', src: '/apps/aa/dns-connection.mp4' },
+    ],
     detail: {
       challenge: {
         en: 'Bring desktop-grade networking primitives to a focused Android experience.',

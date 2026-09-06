@@ -19,7 +19,7 @@ export const ui: Record<string, LocalizedText> = {
   heroTitle1:       { en: 'Multiplatform', id: 'Multiplatform' },
   heroTitle2:       { en: 'Software Engineer.', id: 'Software Engineer.' },
   statBuilds:       { en: 'featured apps', id: 'proyek unggulan' },
-  statYears:        { en: 'years shipping', id: 'tahun pengalaman' },
+  statYears:        { en: 'years exp', id: 'tahun pengalaman' },
   statApps:         { en: 'apps launched', id: 'aplikasi dirilis' },
 
   /* ── nav ──────────────────────────────────────── */
