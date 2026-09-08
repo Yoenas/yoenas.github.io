@@ -526,7 +526,7 @@ export const experience: Experience[] = [
       en: 'Multiplatform Software Engineer',
       id: 'Software Engineer Multiplatform',
     },
-    period: '2023 — Present',
+    period: '2025 — Present',
     summary: {
       en: 'Building production mobile and desktop products across finance, networking, and consumer experiences. Shipping across Flutter, Compose Multiplatform, and native Android.',
       id: 'Membangun produk mobile dan desktop produksi di bidang keuangan, jaringan, dan pengalaman konsumen. Merilis produk dengan Flutter, Compose Multiplatform, dan Android native.',
