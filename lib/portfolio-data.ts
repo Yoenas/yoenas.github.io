@@ -125,8 +125,8 @@ export const projects: Project[] = [
       id: 'Platform untuk berdonasi dan menggalang dana bagi berbagai inisiatif, campaign, dan program sosial.',
     },
     metric: {
-      en: '846 files · 53 bugs resolved · 49 features',
-      id: '846 file · 53 bug diselesaikan · 49 fitur',
+      en: '499 files · 53 bugs resolved · 49 features',
+      id: '499 file · 53 bug diselesaikan · 49 fitur',
     },
     platforms: ['Android', 'iOS'],
     accent: 'sky',
@@ -158,7 +158,7 @@ export const projects: Project[] = [
         id: 'Karena urgent, tentu usulan refactor total ditolak. Jadi saya telusuri akar masalah setiap issue, merombak, dan memperbaiki code di balik fitur-fitur yang terdampak.',
       },
       outcomes: [
-        { en: 'Net ~4,800 lines reduced across 846 files', id: 'Pengurangan ~4.800 baris kode di 846 file' },
+        { en: 'Net ~4,800 lines reduced across 499 files', id: 'Pengurangan ~4.800 baris kode di 499 file' },
         { en: '18 major architectural refactors shipped', id: '18 refaktor arsitektur utama dikirim' },
         { en: 'Seamless Google OAuth 2.0 sign-in flow restored', id: 'Alur masuk Google OAuth 2.0 dipulihkan' },
         { en: 'Zero text-overflow exceptions on all devices', id: 'Nol exception text-overflow di semua perangkat' },
@@ -166,14 +166,14 @@ export const projects: Project[] = [
       ],
       status: 'production',
       verification: {
-        en: 'Production app on App Store and Google Play. 96 commits, 846 files modified.',
-        id: 'Aplikasi produksi di App Store dan Google Play. 96 commit, 846 file dimodifikasi.',
+        en: 'Production app on App Store and Google Play. 96 commits, 499 files modified.',
+        id: 'Aplikasi produksi di App Store dan Google Play. 96 commit, 499 file dimodifikasi.',
       },
       artifacts: [
         {
           label: 'Impact metrics', kind: 'terminal', summary: 'Codebase impact across 96 production commits.',
           lines: [
-            '96 commits · 846 files modified',
+            '96 commits · 499 files modified',
             '+21,704 insertions  −26,504 deletions',
             'Net reduction: ~4,800 lines',
             '',
@@ -219,8 +219,8 @@ export const projects: Project[] = [
       id: 'Kontrol private networking yang terasa native di platform manapun.',
     },
     metric: {
-      en: '778 files · 23 bugs · 95 features',
-      id: '778 file · 23 bug · 95 fitur',
+      en: '1,007 files · 23 bugs · 95 features',
+      id: '1,007 file · 23 bug · 95 fitur',
     },
     platforms: ['macOS', 'Windows'],
     accent: 'violet',
@@ -265,7 +265,7 @@ export const projects: Project[] = [
         {
           label: 'Impact metrics', kind: 'terminal', summary: 'Codebase impact and engineering output.',
           lines: [
-            '778 files modified',
+            '1,007 files modified',
             '+37,770 insertions  −30,682 deletions',
             'Net addition: +7,088 lines',
             '',
@@ -310,8 +310,8 @@ export const projects: Project[] = [
       id: 'Tunnel aman, direduksi ke esensi.',
     },
     metric: {
-      en: '245 files · Shared Kotlin core',
-      id: '245 file · Core Kotlin bersama',
+      en: '162 files · Shared Kotlin core',
+      id: '162 file · Core Kotlin bersama',
     },
     platforms: ['Android'],
     accent: 'emerald',
@@ -355,7 +355,7 @@ export const projects: Project[] = [
         {
           label: 'Impact metrics', kind: 'terminal', summary: 'Codebase footprint across the Android client.',
           lines: [
-            '245 files modified',
+            '162 files modified',
             '+2,293 insertions  −2,855 deletions',
             'Net reduction: −562 lines (streamlined)',
             '',
