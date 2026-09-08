@@ -98,8 +98,8 @@ export const profile = {
   name: 'Yusril Nurhadi Alhabib Sulaeman',
   handle: '@yoenas',
   location: {
-    en: 'Indonesia',
-    id: 'Indonesia',
+    en: 'Jakarta, Indonesia',
+    id: 'Jakarta, Indonesia',
   } satisfies LocalizedText,
   email: 'yusrilnurhadi63@gmail.com',
   tagline: {

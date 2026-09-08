@@ -51,22 +51,22 @@ export function AboutSection() {
             <p>
               {lang === 'id' ? (
                 <>
-                  Saya <strong className="text-neutral-200 font-medium">{profile.name}</strong>, seorang mobile app developer dan pendidik yang berbasis di <strong className="text-neutral-200 font-medium">{loc}</strong>. Meski saya membangun aplikasi intuitif dari nol menggunakan Kotlin, Dart, dan Java, keahlian terdalam saya terletak pada troubleshooting. Jiwa saya adalah seorang <span className="text-sky-300 font-medium">root-cause solver</span>—teruji di garis depan untuk mendiagnosis bug rumit, mengeliminasi technical debt, dan menstabilkan sistem yang kompleks.
+                  Dari seorang mobile app developer, kini saya juga merupakan multiplatform software engineer yang berbasis di <strong className="text-neutral-200 font-medium">{loc}</strong>. Saya membangun aplikasi menggunakan Kotlin dan Dart; poin utama kemampuan saya adalah troubleshooting, yang saya kembangkan melalui pengalaman dalam menangani technical challenges untuk mendiagnosis bug yang kompleks, menghilangkan technical debt, dan menstabilkan sistem yang kompleks.
                 </>
               ) : (
                 <>
-                  I&apos;m <strong className="text-neutral-200 font-medium">{profile.name}</strong>, a mobile app developer and educator based in <strong className="text-neutral-200 font-medium">{loc}</strong>. While I build intuitive apps from scratch using Kotlin, Dart, and Java, my deepest expertise lies in troubleshooting. I am a <span className="text-sky-300 font-medium">root-cause solver</span> at heart—thriving in the trenches to diagnose complex bugs, eliminate technical debt, and stabilize intricate systems.
+                  From a mobile app developer, I&apos;m now also a multiplatform software engineer based in <strong className="text-neutral-200 font-medium">{loc}</strong>. I build apps using Kotlin and Dart; my core strength is troubleshooting, which I&apos;ve developed through my experience successfully handling technical challenges to diagnose complex bugs, eliminate technical debt, and stabilize complex systems.
                 </>
               )}
             </p>
             <p>
               {lang === 'id' ? (
                 <>
-                  Saya beroperasi dengan fokus tunggal tanpa kompromi, mendalami permasalahan hingga tuntas secara permanen dan memastikan codebase jauh lebih bersih dari sebelumnya. Berbekal pengalaman membimbing tim siswa dalam meluncurkan aplikasi siap produksi, saya memadukan insting diagnostik ini dengan komitmen kuat terhadap <span className="text-sky-300 font-medium">clean architecture</span> dan membangun perangkat lunak yang berdaya tahan lama.
+                  Saya menyebut diri saya seorang &quot;<span className="text-sky-300 font-medium">root-cause solver</span>&quot;; saya bekerja dengan fokus yang tak tergoyahkan, single-context focus, bertahan pada sebuah masalah sampai root cause-nya benar-benar dipahami dan terselesaikan. Saya memadukan diagnostic instinct ini dengan komitmen yang kuat terhadap <span className="text-sky-300 font-medium">clean architecture</span> dan membangun software yang bertahan lama.
                 </>
               ) : (
                 <>
-                  I operate with relentless, single-context focus, immersing myself in a problem until it&apos;s permanently resolved and the codebase is cleaner than I found it. Having mentored student teams through deploying production-ready applications, I pair this diagnostic instinct with a firm commitment to <span className="text-sky-300 font-medium">clean architecture</span> and building software that lasts.
+                  I call myself a <span className="text-sky-300 font-medium">root-cause solver</span>; I operate with relentless, single-context focus, staying with a problem until its root cause is understood and resolved. I pair this diagnostic instinct with a firm commitment to <span className="text-sky-300 font-medium">clean architecture</span> and building software that lasts.
                 </>
               )}
             </p>
