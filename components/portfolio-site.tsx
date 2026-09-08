@@ -19,7 +19,7 @@ import {
 import { useLang } from '@/lib/language-context'
 import { t, ui } from '@/lib/localization'
 
-/* ── Accent map ────────────────────────────────────────────── */
+/* -- Accent map ---------------------------------------------- */
 
 const accents = {
   sky: 'from-sky-400/20 via-sky-400/5 to-transparent text-sky-300',
@@ -28,7 +28,7 @@ const accents = {
   amber: 'from-amber-300/20 via-amber-300/5 to-transparent text-amber-200',
 }
 
-/* ── Inline SVG icons ──────────────────────────────────────── */
+/* -- Inline SVG icons ---------------------------------------- */
 
 function AppleIcon() {
   return (
@@ -54,7 +54,7 @@ function GitHubIcon() {
   )
 }
 
-/* ── Language Toggle ───────────────────────────────────────── */
+/* -- Language Toggle ----------------------------------------- */
 
 function LanguageToggle() {
   const { lang, setLang } = useLang()
@@ -91,7 +91,7 @@ function LanguageToggle() {
   )
 }
 
-/* ── Section Heading ───────────────────────────────────────── */
+/* -- Section Heading ----------------------------------------- */
 
 function SectionHeading({ eyebrow, title, detail }: { eyebrow: string; title: string; detail?: string }) {
   return (
@@ -105,7 +105,7 @@ function SectionHeading({ eyebrow, title, detail }: { eyebrow: string; title: st
   )
 }
 
-/* ── Media Lightbox ─────────────────────────────────── */
+/* -- Media Lightbox ----------------------------------- */
 
 function MediaLightbox({
   items,
@@ -264,7 +264,7 @@ function MediaLightbox({
   )
 }
 
-/* ── Project Visual (Zone B: Hero Visual) ──────────────────── */
+/* -- Project Visual (Zone B: Hero Visual) -------------------- */
 
 function ProjectVisual({
   project,
@@ -312,7 +312,7 @@ function ProjectVisual({
        shadow-2xl backdrop-blur-xl transition-all duration-500 group-hover:-translate-y-2
        group-hover:border-white/25 sm:inset-x-8 sm:top-2">
         {hasImages ? (
-          /* ── Real mockup showcase ────────────────────────────── */
+          /* -- Real mockup showcase ------------------------------ */
           <div className="flex h-full flex-col gap-3 pt-2">
             {/* Dot indicators */}
             <div className="flex items-center gap-1 shrink-0 self-end">
@@ -396,7 +396,7 @@ function ProjectVisual({
             </div>
           </div>
         ) : (
-          /* ── Abstract skeleton fallback ──────────────────────── */
+          /* -- Abstract skeleton fallback ------------------------ */
           <div className="flex h-full flex-col justify-end gap-3 pb-8">
             <div className="flex items-center gap-3.5">
               <div className="size-12 sm:size-14 rounded-2xl border border-white/10 bg-white/5 
@@ -419,13 +419,13 @@ function ProjectVisual({
   )
 }
 
-/* ── Artifact Icon ─────────────────────────────────────────── */
+/* -- Artifact Icon ------------------------------------------- */
 
 function ArtifactIcon({ kind }: { kind: ProofArtifact['kind'] }) {
   return kind === 'terminal' ? <Terminal size={15} /> : kind === 'architecture' ? <Layers3 size={15} /> : <Eye size={15} />
 }
 
-/* ── Status Badge ──────────────────────────────────────────── */
+/* -- Status Badge -------------------------------------------- */
 
 function StatusBadge({ status }: { status: 'production' | 'pre-release' }) {
   const { lang } = useLang()
@@ -440,7 +440,7 @@ function StatusBadge({ status }: { status: 'production' | 'pre-release' }) {
   )
 }
 
-/* ── Drawer Actions ────────────────────────────────────────── */
+/* -- Drawer Actions ------------------------------------------ */
 
 function DrawerActions({ project }: { project: Project }) {
   const { lang } = useLang()
@@ -486,7 +486,7 @@ function DrawerActions({ project }: { project: Project }) {
   )
 }
 
-/* ── Project Card (4-Zone Vertical Architecture) ───────────── */
+/* -- Project Card (4-Zone Vertical Architecture) ------------- */
 
 function ProjectCard({
   project,
@@ -505,7 +505,7 @@ function ProjectCard({
 
   return (
     <article className={`project-card flex flex-col justify-between ${isAnyLightboxOpen ? '' : 'group'}`}>
-      {/* ── Zone A: Header (Identity & Platforms) ── */}
+      {/* -- Zone A: Header (Identity & Platforms) -- */}
       <div className="flex items-start justify-between gap-4 p-6 pb-4 flex-col md:flex-row">
         <div className="flex flex-col gap-2 min-w-0">
           {/* taro di sini */}
@@ -543,14 +543,14 @@ function ProjectCard({
         </div>
       </div>
 
-      {/* ── Zone B: Hero Visual ── */}
+      {/* -- Zone B: Hero Visual -- */}
       <ProjectVisual
         project={project}
         isAnyLightboxOpen={isAnyLightboxOpen}
         onOpenLightbox={onOpenLightbox}
       />
 
-      {/* ── Zone C: Metadata (Description & Stack) ── */}
+      {/* -- Zone C: Metadata (Description & Stack) -- */}
       <div className="flex flex-1 flex-col justify-between gap-4 p-6 pb-0">
         <p className="text-sm leading-relaxed text-neutral-300">{lp.thesis}</p>
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-mono text-neutral-400/80">
@@ -565,7 +565,7 @@ function ProjectCard({
         </div>
       </div>
 
-      {/* ── Zone D: The Action Footer (Split Layout) ── */}
+      {/* -- Zone D: The Action Footer (Split Layout) -- */}
       <div className="p-6 pt-0">
         <div className="border-t border-white/10 mt-4 pt-4">
           <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -633,9 +633,9 @@ function ProjectCard({
                   type="button"
                   className="verification-button w-full sm:w-auto"
                   onClick={() => onSelect(project)}
-                  aria-label={`${t(ui.inspectVerification, lang)}: ${project.title}`}
+                  aria-label={`${t(ui.inspectProof, lang)}: ${project.title}`}
                 >
-                  <span>{t(ui.inspectVerification, lang)}</span>
+                  <span>{t(ui.inspectProof, lang)}</span>
                   <ArrowUpRight size={15} aria-hidden="true" />
                 </button>
               )}
@@ -647,7 +647,7 @@ function ProjectCard({
   )
 }
 
-/* ── Proof Drawer ──────────────────────────────────────────── */
+/* -- Proof Drawer -------------------------------------------- */
 
 function ProofDrawer({ project, onClose }: { project: Project; onClose: () => void }) {
   const { lang } = useLang()
@@ -671,7 +671,7 @@ function ProofDrawer({ project, onClose }: { project: Project; onClose: () => vo
       <aside className="proof-drawer relative h-full w-full max-w-2xl overflow-y-auto border-l border-white/10 bg-card p-6 shadow-2xl md:p-10">
         <button className="icon-button fixed right-5 top-5" onClick={onClose} aria-label={t(ui.proofClose, lang)}><X size={18} /></button>
 
-        <p className="eyebrow mt-12">{t(project.detail.status === 'production' ? ui.caseStudyEyebrow : ui.proofEyebrow, lang)}</p>
+        <p className="eyebrow mt-12">{t(ui.caseStudyEyebrow, lang)}</p>
         <div className="mt-4 flex flex-wrap items-center gap-3">
           <h2 className="text-4xl font-semibold tracking-tighter">{project.title}</h2>
           {project.detail.status && <StatusBadge status={project.detail.status} />}
@@ -762,7 +762,7 @@ function ProofDrawer({ project, onClose }: { project: Project; onClose: () => vo
   )
 }
 
-/* ── About / Root-Cause Solver Section ────────────────────────── */
+/* -- About / Root-Cause Solver Section -------------------------- */
 
 function AboutSection() {
   const { lang } = useLang()
@@ -885,7 +885,7 @@ function AboutSection() {
   )
 }
 
-/* ── Main Site Component ───────────────────────────────────── */
+/* -- Main Site Component ------------------------------------- */
 
 export function PortfolioSite() {
   const { lang } = useLang()
@@ -915,11 +915,11 @@ export function PortfolioSite() {
 
   return (
     <main>
-      {/* ── Navbar ──────────────────────────────────────────── */}
+      {/* -- Navbar -------------------------------------------- */}
       <nav className="fixed inset-x-4 top-4 z-40 mx-auto flex max-w-6xl items-center justify-between 
       rounded-2xl border border-white/10 bg-background/80 px-4 py-3 shadow-lg backdrop-blur-xl md:inset-x-6 md:px-5">
         <a href="#top" className="flex items-center gap-3" aria-label="Yusril home">
-          
+          {/* <Image src="/avatar.svg" alt="YN" width={32} height={32} className="rounded-lg object-cover" /> */}
           <span className="grid size-8 place-items-center rounded-lg bg-foreground text-xs font-bold text-background">YN</span>
           <span className="hidden text-sm font-medium sm:inline">{profile.handle}</span>
         </a>
@@ -942,7 +942,7 @@ export function PortfolioSite() {
         </div>
       </nav>
 
-      {/* ── Hero ────────────────────────────────────────────── */}
+      {/* -- Hero ---------------------------------------------- */}
       <section id="top" className="hero-shell page-shell">
         <div className="max-w-4xl">
           <div className="status-pill">
@@ -966,10 +966,10 @@ export function PortfolioSite() {
         </div>
       </section>
 
-      {/* ── About / Root-Cause Solver ───────────────────────── */}
+      {/* -- About / Root-Cause Solver ------------------------- */}
       <AboutSection />
 
-      {/* ── Work ────────────────────────────────────────────── */}
+      {/* -- Work ---------------------------------------------- */}
       <section id="work" className="page-shell section-pad">
         <SectionHeading eyebrow={t(ui.workEyebrow, lang)} title={t(ui.workTitle, lang)} detail={t(ui.workDetail, lang)} />
         <div className="grid gap-6 md:grid-cols-2">
@@ -985,7 +985,7 @@ export function PortfolioSite() {
         </div>
       </section>
 
-      {/* ── Stack ───────────────────────────────────────────── */}
+      {/* -- Stack --------------------------------------------- */}
       <section id="stack" className="page-shell section-pad">
         <SectionHeading eyebrow={t(ui.stackEyebrow, lang)} title={t(ui.stackTitle, lang)} detail={t(ui.stackDetail, lang)} />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -1004,7 +1004,7 @@ export function PortfolioSite() {
         </div>
       </section>
 
-      {/* ── Experience ──────────────────────────────────────── */}
+      {/* -- Experience ---------------------------------------- */}
       <section id="experience" className="page-shell section-pad">
         <SectionHeading eyebrow={t(ui.expEyebrow, lang)} title={t(ui.expTitle, lang)} />
         <div className="grid gap-0 border-t border-white/10">
@@ -1027,7 +1027,7 @@ export function PortfolioSite() {
         </div>
       </section>
 
-      {/* ── Footer / Contact ────────────────────────────────── */}
+      {/* -- Footer / Contact ---------------------------------- */}
       <footer id="contact" className="page-shell section-pad pb-10">
         <div className="footer-card">
           <p className="eyebrow">{t(ui.contactEyebrow, lang)}</p>
