@@ -245,7 +245,7 @@
 
 @layer components {
 
-  /* ── Language toggle ────────────────────────────────── */
+  /* -- Language toggle ---------------------------------- */
   .lang-toggle {
     @apply inline-flex items-center rounded-lg border border-white/10 bg-white/4 p-0.5;
   }
@@ -266,7 +266,7 @@
     @apply absolute inset-0 rounded-md bg-white/10;
   }
 
-  /* ── Action buttons ─────────────────────────────────── */
+  /* -- Action buttons ----------------------------------- */
   .case-study-button {
     @apply inline-flex items-center gap-2 rounded-xl bg-foreground px-4 py-2.5 text-xs font-semibold text-background cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:bg-sky-200 hover:shadow-lg hover:shadow-sky-400/25 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400;
   }
@@ -287,7 +287,7 @@
     @apply border-white/15 text-foreground;
   }
 
-  /* ── Status indicator dot (for Release-Ready badge) ─── */
+  /* -- Status indicator dot (for Release-Ready badge) --- */
   .status-indicator-dot {
     @apply mr-1.5 inline-block size-1.5 rounded-full shadow-sm shadow-sky-300/30;
     background: linear-gradient(135deg, #7dd3fc, #fbbf24);
